@@ -1,0 +1,31 @@
+# Differences between simple_switch.py and simple_switch_13.py
+...
+
+# Describe and discuss the differences regarding the number of flow rules used
+
+## Upper bounds for the number of flow rules
+
+
+Lets say, we have X switch with Y hosts each.
+All switches would be fully-meshed interconnected.
+We will consider one switch only with an example of X = 5 switches with Y = 10 hosts each.
+
+1) For the OpenFlow 1.0 version
+
+THIS MIGHT NOT BE RIGHT COMPLELTLY:
+
+With the OpenFlow 1.0 variant, we would have to maintain flows for each hosts destinations individually.
+
+That would be: Y * ( (X ) * Y ).
+
+In our example scenario that would be 10 * 5 * 10 = 500 flows on one switch!
+
+
+2) For the OpenFlow 1.3 version
+
+In this variant we have two separate lists, one maintains the valid host/src MAC (table0) and one the available destinations(table1).
+
+In a switch we would have to maintain Y + X (for the switch interconnections) rules in table0.
+In table1 the switch would have the list of availbe destinations, which would be the count of all hosts, so X * Y at most.
+
+All in all, we would have a maximum of X + Y + X*Y FlowRules on each switch, so 5 + 10 + (5*10) = 75 rules
